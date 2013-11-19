@@ -1,0 +1,49 @@
+\documentclass[11pt]{article}
+
+\usepackage[polish]{babel}
+\usepackage[utf8]{inputenc}
+%\usepackage{color}
+\usepackage[usenames,dvipsnames,x11names,table]{xcolor}
+
+\begin{document}
+\setkeys{Gin}{width=\textwidth}
+
+Na wszystkich wykresach poniżej zastosowano następującą kolorystykę:
+\begin{itemize}
+  \item \textcolor{black}{Macierz sąsiedztwa}
+  \item \textcolor{red}{Lista sąsiedztwa}
+\end{itemize}
+
+\section{Losowe}
+<<echo=FALSE,fig=TRUE>>=
+  amatrix  <- read.table('matrix.data')
+  alist    <- read.table('list.data')
+  plot(amatrix, type = 'l', xlab = 'Ilość wierzchołków', ylab = 'Czas [ns]', yaxt = 'n')
+  lines(alist, col = 'red')
+@
+
+Na wykresach widać, że lista sąsiedztwa ma trochę lepsze czasy dla algorytmu DFS.
+Wynika to z tego iż można uzyskać listę sąsiadów znacznie szybciej niż w macierzy
+sąsiedztwa, gdyż nie jest wymagane przepisanie całej listy a jedynie zwrocenie
+do niej wskaźnika.
+
+Złożoności dla poszczególnych reprezentacji:
+\begin{table}
+\begin{tabular}{|l|c|c|}
+\hline
+                           & Macierz sąsiedztwa & Lista sąsiedztwa \\\hline
+Złożoność pamięciowa       & $O(|V|^2)$         & $O(|V| + |E|)$ \\
+Istnienie krawędzi         & $O(1)$             & $O(n)$ (gdzie $n$ to liczba sąsiadów) \\
+Wyznaczanie listy sąsiadów & $O(n)$ ($n$ j.w.)  & $O(1)$ \\
+\hline
+\end{tabular}
+\end{table}
+
+Algorytm DFS ma złożoność $O(|V| + |E|)$ jednak jego wydajność zależy od szybkości
+poszukiwania wszystkich sąsiadów danego wierzchołka, przez co nie jest zbyt
+wydajny dla reprezentacji grafów w postaci macierzy sąsiedztwa, gdzie wyszukiwanie
+sąsiadów jest funkcją liniową.
+
+Sortować topologicznie można wszystkie grafy nieposiadające cykli.
+
+\end{document}
